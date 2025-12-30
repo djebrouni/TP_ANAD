@@ -70,3 +70,6 @@ tdc <- acm.disjonctif(data_qual)
 # Vérification des marges
 rowSums(tdc)  # doit être égal au nombre de variables qualitatives
 head(tdc)
+
+save(data, quant_var, qual_vars, tdc, file="data_prepared.RData")
+

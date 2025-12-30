@@ -62,11 +62,10 @@ cat("Écart-type :", sd(quant_var), "\n")
 ```{r message=FALSE, warning=FALSE,echo=FALSE}
 hist(quant_var, main="Histogram of Purchase Amount",
      xlab="Purchase Amount (USD)", col="skyblue")
-qual_vars <- c("Gender", "Item.Purchased", "Category", "Location",
-               "Size", "Color", "Season", "Subscription.Status",
-               "Shipping.Type", "Discount.Applied", "Promo.Code.Used",
-               "Payment.Method", "Frequency.of.Purchases")
-
+qual_vars <- c(
+  "Category", "Gender", "Season", "Payment.Method", 
+  "Frequency.of.Purchases", "Item.Purchased", "Location", "Size"
+)
 
 
 ```
@@ -76,12 +75,20 @@ qual_vars <- c("Gender", "Item.Purchased", "Category", "Location",
 # Tableaux de fréquences et barplots
 ```{r message=FALSE, warning=FALSE,echo=FALSE}
 for (v in qual_vars) {
-  cat("\n### Tableau de fréquences pour :", v, "\n")
-  print(table(data[[v]]))
+  freq <- table(data[[v]])
   
-  barplot(table(data[[v]]), main=paste("Barplot of", v),
+  if (length(freq) == 0) {
+    cat("\n### Tableau de fréquences pour :", v, "est vide, aucun graphique.\n")
+    next
+  }
+  
+  cat("\n### Tableau de fréquences pour :", v, "\n")
+  print(freq)
+  
+  barplot(freq, main=paste("Barplot of", v),
           col="lightgreen", las=2)
 }
+
 ```
 
 
