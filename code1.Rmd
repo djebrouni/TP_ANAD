@@ -1,14 +1,16 @@
 ---
-title: "TP Analyse Factorielle (ACM)"
-author: "Djebrouni Wafa Feriel_ Bouzeguella Imane"
-date: "`r Sys.Date()`"
+title: "TP analyse descriptif + tdc"
+
 output: html_document
 ---
 
 # Introduction
 
-Ce rapport présente une **analyse descriptive et factorielle** du dataset `shopping_behavior.csv`.\
-L'objectif est de comprendre le comportement des clients à partir de leurs achats et variables associées.
+
+
+Ce rapport présente une **analyse descriptive et factorielle** du dataset `adult.csv`.\
+L'objectif est d'analyser les variables socio-démographiques et l'âge pour comprendre les relations entre individus et catégories.
+
 
 # 1. Installation et chargement des packages
 ```{r setup, message=FALSE, warning=FALSE,echo=FALSE}
@@ -30,7 +32,7 @@ library(knitr)
 
 ```
 ```{r message=FALSE, warning=FALSE,echo=FALSE}
-data <- read.csv("shopping_behavior.csv", stringsAsFactors = TRUE)
+data <- read.csv("adult.csv", stringsAsFactors = TRUE)
 
 
 
@@ -43,10 +45,32 @@ dim(data)
 str(data)
 summary(data)
 ```
+```{r message=FALSE, warning=FALSE,echo=FALSE}
+
+qual_vars <- c(
+  "relationship",
+  "marital.status",
+  "sex",
+  "income",
+  "occupation",
+  "workclass",
+  "education"
+)
+
+cat("### Modalités des variables qualitatives\n\n")
+for (v in qual_vars) {
+  cat("Variable :", v, "\n")
+  print(levels(data[[v]]))
+  cat("\n")
+}
+
+
+```
+
 
 # Statistiques descriptives
 ```{r message=FALSE, warning=FALSE,echo=FALSE}
-quant_var <- data$Purchase.Amount..USD.
+quant_var <- data$age
 
 cat("Moyenne :", mean(quant_var), "\n")
 cat("Médiane :", median(quant_var), "\n")
@@ -54,18 +78,16 @@ cat("Minimum :", min(quant_var), "\n")
 cat("Maximum :", max(quant_var), "\n")
 cat("Écart-type :", sd(quant_var), "\n")
 
+
 ```
 
 
 # Histogramme
 
 ```{r message=FALSE, warning=FALSE,echo=FALSE}
-hist(quant_var, main="Histogram of Purchase Amount",
-     xlab="Purchase Amount (USD)", col="skyblue")
-qual_vars <- c(
-  "Category", "Gender", "Season", "Payment.Method", 
-  "Frequency.of.Purchases", "Item.Purchased", "Location", "Size"
-)
+hist(quant_var, main="Histogramme de l'âge",
+xlab="Âge", col="skyblue", breaks = 20)
+
 
 
 ```
@@ -75,19 +97,15 @@ qual_vars <- c(
 # Tableaux de fréquences et barplots
 ```{r message=FALSE, warning=FALSE,echo=FALSE}
 for (v in qual_vars) {
-  freq <- table(data[[v]])
-  
-  if (length(freq) == 0) {
-    cat("\n### Tableau de fréquences pour :", v, "est vide, aucun graphique.\n")
-    next
-  }
-  
-  cat("\n### Tableau de fréquences pour :", v, "\n")
-  print(freq)
-  
-  barplot(freq, main=paste("Barplot of", v),
-          col="lightgreen", las=2)
+freq <- table(data[[v]])
+
+cat("\n### Tableau de fréquences pour :", v, "\n")
+print(freq)
+
+barplot(freq, main=paste("Barplot de", v),
+col="lightgreen", las=2)
 }
+
 
 ```
 
